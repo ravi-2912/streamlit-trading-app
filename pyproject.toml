@@ -1,0 +1,18 @@
+[project]
+name = "trading"
+version = "0.1.0"
+readme = "README.md"
+authors = [
+    { name = "Ravinder Singh", email = "ravi_29_12@hotmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.16.2",
+    "cryptography>=45.0.4",
+    "dotenv>=0.9.9",
+    "pandas>=2.3.0",
+    "requests>=2.32.4",
+    "sqlalchemy>=2.0.41",
+    "streamlit>=1.46.0",
+    "streamlit-tree-select>=0.0.5",
+]
