@@ -1,15 +1,15 @@
 """Add Accounts table
 
-Revision ID: 7de4b5e555e4
+Revision ID: 623cc28c52dc
 Revises: 
-Create Date: 2025-06-20 23:10:25.937887
+Create Date: 2025-06-21 22:59:07.562022
 
 """
 from alembic import op
 import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
-revision = '7de4b5e555e4'
+revision = '623cc28c52dc'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -20,13 +20,10 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('login', sa.String(), nullable=True),
-    sa.Column('_password', sa.String(), nullable=True),
-    sa.Column('api_key', sa.String(), nullable=True),
-    sa.Column('type', sa.String(), nullable=True),
-    sa.Column('broker', sa.String(), nullable=True),
-    sa.Column('server_type', sa.String(), nullable=True),
-    sa.Column('api_url', sa.String(), nullable=True),
-    sa.Column('api_port', sa.Integer(), nullable=True),
+    sa.Column('password', sa.String(), nullable=True),
+    sa.Column('type', sa.Enum('demo', 'live', name='accounttype'), nullable=True),
+    sa.Column('broker', sa.Enum('oanda', 'pepperstone', 'fxcm', 'ig', 'ftmo', 'the5ers', 'e8', name='brokertype'), nullable=True),
+    sa.Column('server', sa.Enum('mt5', 'mt4', 'ct5', name='servertype'), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
