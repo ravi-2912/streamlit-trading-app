@@ -5,11 +5,7 @@ import pandas as pd
 
 from utils.session_data import load_accounts_to_session, load_brokers_to_session
 
-st.set_page_config(
-    page_title="Account Manager",
-    page_icon="💼",
-    layout="wide"
-)
+st.set_page_config(page_title="Account Manager", page_icon="💼", layout="wide")
 
 st.title("💼 Accounts")
 
@@ -21,7 +17,9 @@ def add_account():
         with col1:
             name = col1.text_input("Account Name")
         with col2:
-            broker = st.selectbox("Broker", st.session_state["brokers_df"]["Name"].tolist())
+            broker = st.selectbox(
+                "Broker", st.session_state["brokers_df"]["Name"].tolist()
+            )
 
         col1, col2 = st.columns(2)
         with col1:
@@ -33,17 +31,21 @@ def add_account():
         with col1:
             type = st.selectbox("Type", [e.value for e in AccountType])
         with col2:
-            platform = st.selectbox("Server", [e.value for e in PlatformType])
+            platform = st.selectbox("Platform", [e.value for e in PlatformType])
 
         col1, col2 = st.columns(2)
         with col1:
             path = st.text_input("Path")
         with col2:
-            portable = st.checkbox("Portable", value=True)
+            server = st.text_input("Server")
+
+        portable = st.checkbox("Portable", value=True)
 
         submitted = st.form_submit_button("Submit")
-        broker_id = st.session_state["brokers_df"][st.session_state["brokers_df"]["Name"] == broker].at[0, "ID"]
-        print(broker_id)
+        broker_id = st.session_state["brokers_df"][
+            st.session_state["brokers_df"]["Name"] == broker
+        ].index[0]
+
         if submitted:
             with get_session() as session:
                 new_account = Account(
@@ -52,15 +54,17 @@ def add_account():
                     password=password,
                     type=AccountType(type),
                     broker_id=broker_id,
-                    server=PlatformType(platform),
+                    platform=PlatformType(platform),
                     path=path,
-                    portable=portable
+                    portable=portable,
+                    server=server,
                 )
                 session.add(new_account)
 
             st.success("Account added to database!")
             st.session_state.pop("accounts_df", None)
             st.rerun()
+
 
 st.button("Add Account", on_click=add_account)
 
@@ -69,4 +73,4 @@ with st.spinner("Loading accounts..."):
         load_accounts_to_session()
     if "brokers_df" not in st.session_state:
         load_brokers_to_session()
-    st.dataframe(st.session_state['accounts_df'], use_container_width=True)
+    st.dataframe(st.session_state["accounts_df"], use_container_width=True)
