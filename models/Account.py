@@ -1,6 +1,7 @@
 import os
 from enum import Enum
-from sqlalchemy import Column, Integer, String, Enum as SQLAlchemyEnum
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Enum as SQLAlchemyEnum
+from sqlalchemy.orm import relationship
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 
@@ -18,29 +19,30 @@ class AccountType(str, Enum):
     demo = "Demo"
     live = "Live"
 
-class BrokerType(str, Enum):
-    oanda = "Oanda"
-    pepperstone = "Pepperstone"
-    fxcm = "FXCM"
-    ig = "IG"
-    ftmo = "FTMO"
-    the5ers = "The5ers"
-    e8 = "E8"
-
-class ServerType(str, Enum):
+class PlatformType(str, Enum):
     mt5 = "MT5"
     mt4 = "MT4"
     ct5 = "cT5"
 
-class Accounts(Base):
+class Account(Base):
     __tablename__ = "accounts"
+
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=True)
-    login = Column(String, nullable=True)
-    __password_encrypted = Column("password", String, nullable=True)
-    type = Column(SQLAlchemyEnum(AccountType), nullable=True)
-    broker = Column(SQLAlchemyEnum(BrokerType), nullable=True)
-    server = Column(SQLAlchemyEnum(ServerType), nullable=True)
+    name = Column(String, nullable=False)
+    login = Column(String, nullable=False)
+    __password_encrypted = Column("password", String, nullable=False)
+    type = Column(SQLAlchemyEnum(AccountType), nullable=False)
+    platform = Column(SQLAlchemyEnum(PlatformType), nullable=False)
+    path = Column(String, nullable=False)
+
+    # Mt5 specific fields
+    portable = Column(Boolean, nullable=False, default=True)
+    server = Column(String, nullable=False)
+
+    broker_id = Column(Integer, ForeignKey('brokers.id'), nullable=True)
+    broker = relationship("Broker", back_populates="accounts")
+
+    instruments = relationship('Instrument', backref='account')
 
     def __init__(self, **kwargs):
         password = kwargs.pop("password", None)

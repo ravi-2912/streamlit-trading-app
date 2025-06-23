@@ -8,10 +8,15 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "alembic>=1.16.2",
+    "asyncio>=3.4.3",
     "cryptography>=45.0.4",
     "dotenv>=0.9.9",
+    "metatrader5>=5.0.5120",
+    "numpy>=2.3.0",
     "pandas>=2.3.0",
+    "psutil>=7.0.0",
     "requests>=2.32.4",
+    "setuptools>=80.9.0",
     "sqlalchemy>=2.0.41",
     "streamlit>=1.46.0",
     "streamlit-tree-select>=0.0.5",

@@ -1,9 +1,9 @@
 import streamlit as st
-from models.Accounts import Accounts, AccountType, BrokerType, ServerType
+from models.Account import Account, AccountType, PlatformType
 from db.get_session import get_session
 import pandas as pd
 
-from utils.session_data import load_accounts_to_session
+from utils.session_data import load_accounts_to_session, load_brokers_to_session
 
 st.set_page_config(
     page_title="Account Manager",
@@ -19,25 +19,42 @@ def add_account():
     with st.form("account_form"):
         col1, col2 = st.columns(2)
         with col1:
-            name = col1.text_input("Name")
-            login = st.text_input("Login")
-            account_from = st.selectbox("Broker", [e.value for e in BrokerType])
+            name = col1.text_input("Account Name")
         with col2:
-            account_type = st.selectbox("Type", [e.value for e in AccountType])
+            broker = st.selectbox("Broker", st.session_state["brokers_df"]["Name"].tolist())
+
+        col1, col2 = st.columns(2)
+        with col1:
+            login = st.text_input("Login")
+        with col2:
             password = st.text_input("Password", type="password")
-            server_type = st.selectbox("Server", [e.value for e in ServerType])
+
+        col1, col2 = st.columns(2)
+        with col1:
+            type = st.selectbox("Type", [e.value for e in AccountType])
+        with col2:
+            platform = st.selectbox("Server", [e.value for e in PlatformType])
+
+        col1, col2 = st.columns(2)
+        with col1:
+            path = st.text_input("Path")
+        with col2:
+            portable = st.checkbox("Portable", value=True)
 
         submitted = st.form_submit_button("Submit")
-
+        broker_id = st.session_state["brokers_df"][st.session_state["brokers_df"]["Name"] == broker].at[0, "ID"]
+        print(broker_id)
         if submitted:
             with get_session() as session:
-                new_account = Accounts(
+                new_account = Account(
                     name=name,
                     login=login,
                     password=password,
-                    type=AccountType(account_type),
-                    broker=BrokerType(account_from),
-                    server=ServerType(server_type),
+                    type=AccountType(type),
+                    broker_id=broker_id,
+                    server=PlatformType(platform),
+                    path=path,
+                    portable=portable
                 )
                 session.add(new_account)
 
@@ -50,4 +67,6 @@ st.button("Add Account", on_click=add_account)
 with st.spinner("Loading accounts..."):
     if "accounts_df" not in st.session_state:
         load_accounts_to_session()
+    if "brokers_df" not in st.session_state:
+        load_brokers_to_session()
     st.dataframe(st.session_state['accounts_df'], use_container_width=True)
