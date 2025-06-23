@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from streamlit_tree_select import tree_select
 
 from models.Account import AccountType, PlatformType
@@ -47,37 +48,39 @@ with st.spinner("Loading accounts..."):
 
     with st_col2:
         symbols = st.multiselect(label="Asset", options=st.session_state["symbols_df"])
-        with st.form("input_form"):
-            input_data = {}
+        if symbols:
+            # Prefill the DataFrame
+            default_data = {
+                "Option": symbols,
+                "Text": [""] * len(symbols),
+                "Bool": [False] * len(symbols),
+                "Number": [0] * len(symbols),
+                # "Value": [value_map[opt] for opt in selected_options]
+            }
+            df = pd.DataFrame(default_data)
 
-            for opt in symbols:
-                st.markdown(f"###### {opt} Inputs")
-                col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
-
-                with col1:
-                    text_val = st.text_input(f"{opt} Text", key=f"{opt}_text")
-                with col2:
-                    bool_val = st.checkbox(f"{opt} Bool", key=f"{opt}_bool")
-                with col3:
-                    num_val = st.number_input(f"{opt} Number", key=f"{opt}_number")
-                # with col4:
-                #     st.markdown(f"**{value_map[opt]}**")
-
-                input_data[opt] = {
-                    "text": text_val,
-                    "bool": bool_val,
-                    "number": num_val,
-                    # "value": value_map[opt]
-                }
+            # Let user edit text, bool, number (not 'Value' or 'Option')
+            edited_df = st.data_editor(
+                df,
+                column_config={
+                    "Text": st.column_config.TextColumn("Text Input"),
+                    "Bool": st.column_config.CheckboxColumn("Boolean"),
+                    "Number": st.column_config.NumberColumn("Number Input"),
+                    "Value": st.column_config.TextColumn(
+                        "Value (readonly)", disabled=True
+                    ),
+                    "Option": st.column_config.TextColumn("Option", disabled=True),
+                },
+                use_container_width=True,
+                num_rows="fixed",
+            )
 
             # Submit button
-            submitted = st.form_submit_button("Execute")
+            if st.button("Execute"):
+                st.success("Inputs submitted!")
+                st.write("Processed Data:")
+                st.dataframe(edited_df)
 
-        # Action on submit
-        if submitted:
-            st.success("Form submitted successfully!")
-            st.write("Collected Input Data:")
-            st.json(input_data)
 
 # st.write(grouping)
 # st.write(selected)
