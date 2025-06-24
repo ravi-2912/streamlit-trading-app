@@ -688,6 +688,17 @@ wheels = [
 ]
 
 [[package]]
+name = "streamlit-quill"
+version = "0.0.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "streamlit" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/73/7c/0f8b9a457203f8a8e763b4708bbc98a5a202deaf963c690f240f1d4b9774/streamlit_quill-0.0.3-1-py3-none-any.whl", hash = "sha256:6f6851176811be38ce8393951a68afece5effae2aaf26752779d34dc024b7d99", size = 2915636, upload-time = "2020-09-27T15:24:38.953Z" },
+]
+
+[[package]]
 name = "streamlit-tree-select"
 version = "0.0.5"
 source = { registry = "https://pypi.org/simple" }
@@ -753,6 +764,7 @@ dependencies = [
     { name = "setuptools" },
     { name = "sqlalchemy" },
     { name = "streamlit" },
+    { name = "streamlit-quill" },
     { name = "streamlit-tree-select" },
 ]
 
@@ -770,6 +782,7 @@ requires-dist = [
     { name = "setuptools", specifier = ">=80.9.0" },
     { name = "sqlalchemy", specifier = ">=2.0.41" },
     { name = "streamlit", specifier = ">=1.46.0" },
+    { name = "streamlit-quill", specifier = ">=0.0.3" },
     { name = "streamlit-tree-select", specifier = ">=0.0.5" },
 ]
 

@@ -40,7 +40,7 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
 
         accounts = [
             Account(
-                name="IC Markets Demo 1",
+                name="John Main",
                 login="52399047",
                 password="9UtKTv0!2MUeaT",
                 type="demo",
@@ -51,7 +51,7 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 server="ICMarketsSC-Demo"
             ),
             Account(
-                name="IC Markets Demo 2",
+                name="Jane Main",
                 login="52399298",
                 password="10Bf@C4NzJWFUF",
                 type="demo",
@@ -62,7 +62,7 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 server="ICMarketsSC-Demo",
             ),
             Account(
-                name="Pepperstone Spread Betting Demo",
+                name="John Spread Betting",
                 login="62081926",
                 password="?afslF8rqn",
                 type="demo",

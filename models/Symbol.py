@@ -9,6 +9,6 @@ class Symbol(Base):
 
     id = Column(Integer, primary_key=True)
     symbol = Column(String, unique=True, nullable=False)
-    description = Column(String)
+    description = Column(String, nullable=True)
 
     instruments = relationship('Instrument', backref='symbol')

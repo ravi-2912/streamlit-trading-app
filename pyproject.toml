@@ -19,5 +19,6 @@ dependencies = [
     "setuptools>=80.9.0",
     "sqlalchemy>=2.0.41",
     "streamlit>=1.46.0",
+    "streamlit-quill>=0.0.3",
     "streamlit-tree-select>=0.0.5",
 ]

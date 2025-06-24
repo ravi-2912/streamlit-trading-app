@@ -1,8 +1,12 @@
 import numpy as np
 import streamlit as st
 import pandas as pd
-from db.get_session import get_session
+from sqlalchemy import func
+from sqlalchemy.orm import aliased
+
 from models import Account, Broker, Instrument, Symbol
+from db.get_session import get_session
+from utils.case_converter import snake_to_title
 
 
 def load_instruments_to_session():
@@ -31,27 +35,40 @@ def load_instruments_to_session():
             st.session_state["instruments_df"] = df
 
 
-def load_accounts_to_session(load_instruments: bool = True):
-    if load_instruments:
-        load_instruments_to_session()
-
+def load_accounts_to_session():
     if "accounts_df" not in st.session_state:
         with get_session() as session:
-            accounts = session.query(Account).all()
-            instruments_df = st.session_state.get("instruments_df")
             data = []
+            query = (
+                session.query(
+                    Account.id,
+                    Account.name,
+                    Account.login,
+                    Account.type,
+                    Account.platform,
+                    Account.path,
+                    Account.portable,
+                    Account.server,
+                    Broker.name.label("broker"),
+                    func.count(Instrument.id).label("instrument_count")
+                )
+                .outerjoin(Broker, Account.broker_id == Broker.id)
+                .outerjoin(Instrument, Instrument.account_id == Account.id)
+                .group_by(Account.id, Broker.name)
+            )
+            accounts = query.all()
             for acc in accounts:
-                instruments = instruments_df[instruments_df["Account ID"] == acc.id]
                 data.append(
                     {
                         "ID": acc.id,
                         "Name": acc.name,
+                        "Broker": acc.broker,
                         "Login": acc.login,
                         "Type": acc.type,
                         "Platform": acc.platform,
                         "Server": acc.server,
                         "Path": acc.path,
-                        "Instruments #": np.shape(instruments)[0],
+                        "Instruments #": acc.instrument_count,
                     }
                 )
             df = pd.DataFrame(data)
@@ -110,3 +127,23 @@ def load_symbols_to_session():
             except KeyError:
                 pass
             st.session_state["symbols_df"] = df
+
+def get_all_items_from_table(table, fields) -> pd.DataFrame:
+    with get_session() as session:
+        items = session.query(table).all()
+        data = []
+        for item in items:
+            data.append(
+                {
+                    **{snake_to_title(field) : getattr(item, field) for field in fields}
+                }
+            )
+        df = pd.DataFrame(data)
+        try:
+            df.set_index(
+                "ID",
+                inplace=True,
+            )
+        except KeyError:
+            pass
+        return df
