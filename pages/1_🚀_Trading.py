@@ -58,43 +58,48 @@ with st_col2:
         c3.selectbox("Direction", options=["Long", "Short"])
         c4.selectbox("Order Type", options=["Market", "Limit", "Stop"])
         c1, c2, c3, c4 = st.columns(4)
-        c1.checkbox("Direction based on Currency", value=False)
-        c2.selectbox("Currency", options=["USD", "GBP"])
+        c1.selectbox("Direction based on Currency", options=["", "USD", "GBP"])
 
-    default_data = {
-        "Symbol": [],
-        "Risk %": [],
-        "SL/TP Factor": [],
-        "Direction": [],
-        "Order Type": [],
-        "Entry Price": [],
-        "SL Price": [],
-        "TP Price": [],
-        "Lots": [],
-        "Risk": [],
-    }
-    df = pd.DataFrame(default_data)
-    df["Symbol"] = df["Symbol"].astype(str)
+    symbols = st.multiselect(
+        "Select Symbols",
+        options=st.session_state["symbols_df"]["Name"].tolist(),
 
-    edited_df = st.data_editor(
-        df,
-        column_config={
-            "Symbol": st.column_config.SelectboxColumn("Symbol", options=st.session_state["symbols_df"]["Name"].tolist()),
-            "Risk %": st.column_config.NumberColumn("Risk"),
-            "SL/TP Factor": st.column_config.NumberColumn("SL/TP Factor"),
-            "Direction": st.column_config.SelectboxColumn("Direction", options=["Long", "Short"]),
-            "Order Type": st.column_config.SelectboxColumn("Order Type", options=["Market", "Limit", "Stop"]),
-            "Entry Price": st.column_config.NumberColumn("Entry Price"),
-            "SL Price": st.column_config.NumberColumn("SL Price"),
-            "TP Price": st.column_config.NumberColumn("TP Price"),
-            "Lots": st.column_config.NumberColumn("Lots", disabled=True),
-            "Risk": st.column_config.NumberColumn("Risk", disabled=True),
-        },
-        use_container_width=True,
-        num_rows="dynamic",
     )
+    if symbols:
+        default_data = {
+            "Symbol": [],
+            "Risk %": [],
+            "SL/TP Factor": [],
+            "Direction": [],
+            "Order Type": [],
+            "Entry Price": [],
+            "SL Price": [],
+            "TP Price": [],
+            "Lots": [],
+            "Risk": [],
+        }
+        df = pd.DataFrame(default_data)
+        df["Symbol"] = symbols
 
-    notes = st_quill(placeholder="Notes")
+        edited_df = st.data_editor(
+            df,
+            column_config={
+                "Symbol": st.column_config.TextColumn("Symbol", disabled=True),
+                "Risk %": st.column_config.NumberColumn("Risk"),
+                "SL/TP Factor": st.column_config.NumberColumn("SL/TP Factor"),
+                "Direction": st.column_config.SelectboxColumn("Direction", options=["Long", "Short"]),
+                "Order Type": st.column_config.SelectboxColumn("Order Type", options=["Market", "Limit", "Stop"]),
+                "Entry Price": st.column_config.NumberColumn("Entry Price"),
+                "SL Price": st.column_config.NumberColumn("SL Price"),
+                "TP Price": st.column_config.NumberColumn("TP Price"),
+                "Lots": st.column_config.NumberColumn("Lots", disabled=True),
+                "Risk": st.column_config.NumberColumn("Risk", disabled=True),
+            },
+            use_container_width=True,
+            num_rows="fixed",
+        )
+
+        notes = st_quill(placeholder="Notes")
     # if st.button("Execute"):
     #     st.success("Inputs submitted!")
     #     st.write("Processed Data:")

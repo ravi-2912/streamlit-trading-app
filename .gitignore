@@ -209,6 +209,6 @@ __marimo__/
 _old/
 
 # Sqlite
-.sqlite3
-.sqlite
-.db
+*.sqlite3
+*.sqlite
+*.db
