@@ -134,11 +134,39 @@ def seed_symbols(clear_existing: bool = True):
             session.commit()
 
         symbols = [
+            # Majors
             Symbol(symbol="EURUSD", description="Euro to US Dollar"),
-            Symbol(symbol="GBPUSD", description="British Pound to US Dollar"),
             Symbol(symbol="USDJPY", description="US Dollar to Japanese Yen"),
+            Symbol(symbol="GBPUSD", description="British Pound to US Dollar"),
+            Symbol(symbol="USDCHF", description="US Dollar to Swiss Franc"),
             Symbol(symbol="AUDUSD", description="Australian Dollar to US Dollar"),
+            Symbol(symbol="NZDUSD", description="New Zealand Dollar to US Dollar"),
             Symbol(symbol="USDCAD", description="US Dollar to Canadian Dollar"),
+
+            # Minors
+            Symbol(symbol="EURGBP", description="Euro to British Pound"),
+            Symbol(symbol="EURJPY", description="Euro to Japanese Yen"),
+            Symbol(symbol="EURCHF", description="Euro to Swiss Franc"),
+            Symbol(symbol="GBPJPY", description="British Pound to Japanese Yen"),
+            Symbol(symbol="GBPCHF", description="British Pound to Swiss Franc"),
+            Symbol(symbol="AUDJPY", description="Australian Dollar to Japanese Yen"),
+            Symbol(symbol="AUDNZD", description="Australian Dollar to New Zealand Dollar"),
+            Symbol(symbol="CADJPY", description="Canadian Dollar to Japanese Yen"),
+            Symbol(symbol="CHFJPY", description="Swiss Franc to Japanese Yen"),
+            Symbol(symbol="EURAUD", description="Euro to Australian Dollar"),
+
+            # Exotics
+            Symbol(symbol="USDZAR", description="US Dollar to South African Rand"),
+            Symbol(symbol="USDTRY", description="US Dollar to Turkish Lira"),
+            Symbol(symbol="USDMXN", description="US Dollar to Mexican Peso"),
+            Symbol(symbol="USDSEK", description="US Dollar to Swedish Krona"),
+            Symbol(symbol="USDNOK", description="US Dollar to Norwegian Krone"),
+            Symbol(symbol="USDHKD", description="US Dollar to Hong Kong Dollar"),
+            Symbol(symbol="USDSGD", description="US Dollar to Singapore Dollar"),
+            Symbol(symbol="USDPLN", description="US Dollar to Polish Zloty"),
+            Symbol(symbol="USDCNH", description="US Dollar to Chinese Yuan Offshore"),
+            Symbol(symbol="USDHUF", description="US Dollar to Hungarian Forint"),
+            Symbol(symbol="USDTHB", description="US Dollar to Thai Baht"),
         ]
 
         session.add_all(symbols)
