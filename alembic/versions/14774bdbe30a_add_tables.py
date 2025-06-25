@@ -1,15 +1,15 @@
 """Add tables
 
-Revision ID: aaee4caa762f
+Revision ID: 14774bdbe30a
 Revises: 
-Create Date: 2025-06-25 21:36:11.876472
+Create Date: 2025-06-25 22:15:10.025382
 
 """
 from alembic import op
 import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
-revision = 'aaee4caa762f'
+revision = '14774bdbe30a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -40,6 +40,12 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('symbol', sa.String(), nullable=False),
     sa.Column('description', sa.String(), nullable=True),
+    sa.Column('type', sa.String(), nullable=True),
+    sa.Column('sector', sa.String(), nullable=True),
+    sa.Column('industry', sa.String(), nullable=True),
+    sa.Column('country', sa.String(), nullable=True),
+    sa.Column('currency', sa.String(), nullable=True),
+    sa.Column('exchange', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('symbol')
     )
