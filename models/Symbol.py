@@ -12,3 +12,4 @@ class Symbol(Base):
     description = Column(String, nullable=True)
 
     instruments = relationship('Instrument', backref='symbol')
+    trades = relationship('Trade', back_populates='symbol')

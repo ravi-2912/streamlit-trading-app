@@ -2,8 +2,6 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Float, UniqueConstra
 from sqlalchemy.orm import relationship
 
 from db.base import Base
-from db.get_session import get_session
-from models import Suffix, Symbol
 
 
 class Instrument(Base):
@@ -27,6 +25,8 @@ class Instrument(Base):
 
     suffix_id = Column(Integer, ForeignKey('suffixes.id'))
     suffix = relationship('Suffix', backref='instruments')
+
+    trades = relationship("Trade", back_populates="instrument")
 
     # Metadata
     lot_size = Column(Float, nullable=True)

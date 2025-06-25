@@ -1,10 +1,11 @@
 import sys
 import os
 from typing import List
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 
-from models import Broker, Account, PlatformType, Symbol, Instrument, Suffix
+from models import Broker, Account, PlatformType, Symbol, Instrument, Suffix, CurrencyType, Strategy
 from db.get_session import get_session
 
 from data_access.add_instrument import add_instrument
@@ -48,7 +49,8 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 platform=PlatformType.mt5,
                 path=os.path.join("D:\\", "MetaTrader5","MT5_MT_1", "terminal64.exe"),
                 portable=True,
-                server="ICMarketsSC-Demo"
+                server="ICMarketsSC-Demo",
+                currency=CurrencyType.USD
             ),
             Account(
                 name="Jane Main",
@@ -60,6 +62,7 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 path=os.path.join("D:\\", "MetaTrader5","MT5_MT_2", "terminal64.exe"),
                 portable=True,
                 server="ICMarketsSC-Demo",
+                currency=CurrencyType.USD
             ),
             Account(
                 name="John Spread Betting",
@@ -71,6 +74,7 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 path=os.path.join("D:\\", "MetaTrader5","MT5_MT_3", "terminal64.exe"),
                 portable=True,
                 server="PepperstoneUK-Demo",
+                currency=CurrencyType.GBP
             ),
         ]
 
@@ -115,50 +119,25 @@ def seed_instruments(symbols, accounts, clear_existing: bool = True):
         ]
         session.add_all(instruments)
         session.commit()
-        # instruments = [
-        #     Instrument(
-        #         ticker="EURUSD",
-        #         description="Euro to US Dollar",
-        #         symbol=symbols[0],
-        #         account=accounts[0],
-        #     ),
-        #     Instrument(
-        #         ticker="GBPUSD",
-        #         description="Euro to US Dollar",
-        #         symbol=symbols[1],
-        #         account=accounts[0],
-        #     ),
-        #     Instrument(
-        #         ticker="EURUSD.ecn",
-        #         description="Euro to US Dollar",
-        #         symbol=symbols[0],
-        #         account=accounts[1],
-        #     ),
-        #     Instrument(
-        #         ticker="GBPUSD.ecn",
-        #         description="Euro to US Dollar",
-        #         symbol=symbols[1],
-        #         account=accounts[1],
-        #     ),
-        #     Instrument(
-        #         ticker="EURUSD_SB",
-        #         description="Euro to US Dollar",
-        #         symbol=symbols[0],
-        #         account=accounts[2],
-        #     ),
-        #     Instrument(
-        #         ticker="GBPUSD_SB",
-        #         description="Euro to US Dollar",
-        #         symbol=symbols[1],
-        #         account=accounts[2],
-        #     ),
-        # ]
+        print("Instruments seeded successfully.")
+        return instruments
 
-        # session.add_all(instruments)
-        # session.commit()
-    print("Instruments seeded successfully.")
-        # return instruments
+def seed_strategies(clear_existing: bool = True):
+    with get_session() as session:
+        if clear_existing:
+            session.query(Strategy).delete()
+            session.commit()
 
+        strategies = [
+            Strategy(name="Strategy 1"),
+            Strategy(name="Strategy 2"),
+            Strategy(name="Strategy 3"),
+        ]
+
+        session.add_all(strategies)
+        session.commit()
+        print("Strategies seeded successfully.")
+        return strategies
 
 
 def seed_all():
@@ -166,7 +145,8 @@ def seed_all():
     accounts = seed_accounts(brokers)
     symbols = seed_symbols()
     instruments = seed_instruments(symbols, accounts)
-    return brokers, accounts, symbols, instruments
+    strategies = seed_strategies()
+    return brokers, accounts, symbols, instruments, strategies
 
 if __name__ == "__main__":
     seed_all()

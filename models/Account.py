@@ -6,6 +6,7 @@ from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 
 from db.base import Base
+from models.currencies import CurrencyType
 
 load_dotenv()
 
@@ -34,6 +35,7 @@ class Account(Base):
     type = Column(SQLAlchemyEnum(AccountType), nullable=False)
     platform = Column(SQLAlchemyEnum(PlatformType), nullable=False)
     path = Column(String, nullable=False)
+    currency = Column(SQLAlchemyEnum(CurrencyType), nullable=False)
 
     # Mt5 specific fields
     portable = Column(Boolean, nullable=False, default=True)
@@ -43,6 +45,8 @@ class Account(Base):
     broker = relationship("Broker", back_populates="accounts")
 
     instruments = relationship('Instrument', backref='account')
+
+    trades = relationship("Trade", back_populates="account")
 
     def __init__(self, **kwargs):
         password = kwargs.pop("password", None)

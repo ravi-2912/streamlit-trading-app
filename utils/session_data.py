@@ -49,6 +49,7 @@ def load_accounts_to_session():
                     Account.path,
                     Account.portable,
                     Account.server,
+                    Account.currency,
                     Broker.name.label("broker"),
                     func.count(Instrument.id).label("instrument_count")
                 )
@@ -63,6 +64,7 @@ def load_accounts_to_session():
                         "ID": acc.id,
                         "Name": acc.name,
                         "Broker": acc.broker,
+                        "Currency": acc.currency,
                         "Login": acc.login,
                         "Type": acc.type,
                         "Platform": acc.platform,

@@ -1,5 +1,5 @@
 import streamlit as st
-from models.Account import Account, AccountType, PlatformType
+from models.Account import Account, AccountType, PlatformType, CurrencyType
 from db.get_session import get_session
 import pandas as pd
 
@@ -39,6 +39,10 @@ def add_account():
         with col2:
             server = st.text_input("Server")
 
+        c1, _ = st.columns(2)
+        with c1:
+            currency = st.selectbox("Currency", options=[currency.value for currency in CurrencyType])
+
         portable = st.checkbox("Portable", value=True)
 
         submitted = st.form_submit_button("Submit")
@@ -58,6 +62,7 @@ def add_account():
                     path=path,
                     portable=portable,
                     server=server,
+                    currency=CurrencyType(currency),
                 )
                 session.add(new_account)
 
