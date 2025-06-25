@@ -59,8 +59,8 @@ with st_col1:
     )
     ungroup = list(set(options) - set(grouping))
 
-    nodes, expansions = build_tree(st.session_state['accounts_df'], grouping, enum_mapping=enum_mapping, ungroup_keys=ungroup)
-    selected = tree_select(nodes, show_expand_all=True, )
+    nodes, expanded = build_tree(st.session_state['accounts_df'], grouping, enum_mapping=enum_mapping, ungroup_keys=ungroup)
+    selected = tree_select(nodes, show_expand_all=True, expanded=expanded)
 
 
 with st_col2:
@@ -146,12 +146,12 @@ with st_col2:
             column_config={
                 "Symbol": st.column_config.TextColumn("Symbol", disabled=True),
                 "Risk %": st.column_config.NumberColumn("Risk %", format="percent"),
-                "SL/TP Factor": st.column_config.NumberColumn("SL/TP Factor", default=1),
+                "SL/TP Factor": st.column_config.NumberColumn("SL/TP Factor", default=1, help="Multiplier for Common SL/TP"),
                 "Direction": st.column_config.SelectboxColumn("Direction", options=["Long", "Short"], required=True),
                 "Order Type": st.column_config.SelectboxColumn("Order Type", options=["Market", "Limit", "Stop"], disabled=True),
                 "Entry Price": st.column_config.NumberColumn("Entry Price", disabled=True if common_order_type == "Market" else False),
-                "SL Pips": st.column_config.NumberColumn("SL Pips", default=common_sl),
-                "TP Pips": st.column_config.NumberColumn("TP Pips", default=common_tp),
+                "SL Pips": st.column_config.NumberColumn("SL Pips", default=common_sl, help="Override Common SL"),
+                "TP Pips": st.column_config.NumberColumn("TP Pips", default=common_tp, help="Override Common TP"),
                 "Lots(~)": st.column_config.NumberColumn("Lots", disabled=True),
                 "Risk": st.column_config.NumberColumn("Risk", disabled=True),
             },

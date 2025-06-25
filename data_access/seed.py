@@ -76,6 +76,43 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 server="PepperstoneUK-Demo",
                 currency=CurrencyType.GBP
             ),
+
+            Account(
+                name="John Main",
+                login="52399047",
+                password="9UtKTv0!2MUeaT",
+                type="live",
+                broker=brokers[0],
+                platform=PlatformType.mt5,
+                path=os.path.join("D:\\", "MetaTrader5","MT5_MT_4", "terminal64.exe"),
+                portable=True,
+                server="ICMarketsSC-Live",
+                currency=CurrencyType.USD
+            ),
+            Account(
+                name="Jane Main",
+                login="52399298",
+                password="10Bf@C4NzJWFUF",
+                type="live",
+                broker=brokers[0],
+                platform=PlatformType.mt5,
+                path=os.path.join("D:\\", "MetaTrader5","MT5_MT_5", "terminal64.exe"),
+                portable=True,
+                server="ICMarketsSC-Live",
+                currency=CurrencyType.USD
+            ),
+            Account(
+                name="John Spread Betting",
+                login="62081926",
+                password="?afslF8rqn",
+                type="live",
+                broker=brokers[1],
+                platform=PlatformType.mt5,
+                path=os.path.join("D:\\", "MetaTrader5","MT5_MT_6", "terminal64.exe"),
+                portable=True,
+                server="PepperstoneUK-Live",
+                currency=CurrencyType.GBP
+            ),
         ]
 
         session.add_all(accounts)
