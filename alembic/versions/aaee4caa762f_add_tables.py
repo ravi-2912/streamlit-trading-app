@@ -1,15 +1,15 @@
 """Add tables
 
-Revision ID: 45b130a81c9d
+Revision ID: aaee4caa762f
 Revises: 
-Create Date: 2025-06-25 19:25:03.392877
+Create Date: 2025-06-25 21:36:11.876472
 
 """
 from alembic import op
 import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
-revision = '45b130a81c9d'
+revision = 'aaee4caa762f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -52,6 +52,7 @@ def upgrade():
     sa.Column('platform', sa.Enum('mt5', 'mt4', 'ct5', name='platformtype'), nullable=False),
     sa.Column('path', sa.String(), nullable=False),
     sa.Column('currency', sa.Enum('USD', 'EUR', 'GBP', 'JPY', 'CHF', 'AUD', 'CAD', 'NZD', 'CNY', 'HKD', 'NOK', 'SGD', 'KRW', 'SEK', 'MXN', name='currencytype'), nullable=False),
+    sa.Column('balance', sa.Float(), nullable=True),
     sa.Column('portable', sa.Boolean(), nullable=False),
     sa.Column('server', sa.String(), nullable=False),
     sa.Column('broker_id', sa.Integer(), nullable=True),

@@ -50,7 +50,8 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 path=os.path.join("D:\\", "MetaTrader5","MT5_MT_1", "terminal64.exe"),
                 portable=True,
                 server="ICMarketsSC-Demo",
-                currency=CurrencyType.USD
+                currency=CurrencyType.USD,
+                balance=10000
             ),
             Account(
                 name="Jane Main",
@@ -62,7 +63,8 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 path=os.path.join("D:\\", "MetaTrader5","MT5_MT_2", "terminal64.exe"),
                 portable=True,
                 server="ICMarketsSC-Demo",
-                currency=CurrencyType.USD
+                currency=CurrencyType.USD,
+                balance=15000
             ),
             Account(
                 name="John Spread Betting",
@@ -74,7 +76,8 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 path=os.path.join("D:\\", "MetaTrader5","MT5_MT_3", "terminal64.exe"),
                 portable=True,
                 server="PepperstoneUK-Demo",
-                currency=CurrencyType.GBP
+                currency=CurrencyType.GBP,
+                balance=20000
             ),
 
             Account(
@@ -87,7 +90,8 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 path=os.path.join("D:\\", "MetaTrader5","MT5_MT_4", "terminal64.exe"),
                 portable=True,
                 server="ICMarketsSC-Live",
-                currency=CurrencyType.USD
+                currency=CurrencyType.USD,
+                balance=25000
             ),
             Account(
                 name="Jane Main",
@@ -99,7 +103,8 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 path=os.path.join("D:\\", "MetaTrader5","MT5_MT_5", "terminal64.exe"),
                 portable=True,
                 server="ICMarketsSC-Live",
-                currency=CurrencyType.USD
+                currency=CurrencyType.USD,
+                balance=30000
             ),
             Account(
                 name="John Spread Betting",
@@ -111,7 +116,8 @@ def seed_accounts(brokers: List[Broker] ,clear_existing: bool = True):
                 path=os.path.join("D:\\", "MetaTrader5","MT5_MT_6", "terminal64.exe"),
                 portable=True,
                 server="PepperstoneUK-Live",
-                currency=CurrencyType.GBP
+                currency=CurrencyType.GBP,
+                balance=35000
             ),
         ]
 

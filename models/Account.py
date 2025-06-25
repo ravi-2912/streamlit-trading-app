@@ -1,6 +1,6 @@
 import os
 from enum import Enum
-from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Enum as SQLAlchemyEnum
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Float, Enum as SQLAlchemyEnum
 from sqlalchemy.orm import relationship
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
@@ -36,6 +36,7 @@ class Account(Base):
     platform = Column(SQLAlchemyEnum(PlatformType), nullable=False)
     path = Column(String, nullable=False)
     currency = Column(SQLAlchemyEnum(CurrencyType), nullable=False)
+    balance = Column(Float, nullable=True)
 
     # Mt5 specific fields
     portable = Column(Boolean, nullable=False, default=True)

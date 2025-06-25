@@ -4,7 +4,7 @@ import pandas as pd
 from sqlalchemy import func
 from sqlalchemy.orm import aliased
 
-from models import Account, Broker, Instrument, Symbol
+from models import Account, Broker, Instrument
 from db.get_session import get_session
 from utils.case_converter import snake_to_title
 
@@ -50,6 +50,7 @@ def load_accounts_to_session():
                     Account.portable,
                     Account.server,
                     Account.currency,
+                    Account.balance,
                     Broker.name.label("broker"),
                     func.count(Instrument.id).label("instrument_count")
                 )
@@ -71,6 +72,7 @@ def load_accounts_to_session():
                         "Server": acc.server,
                         "Path": acc.path,
                         "Instruments #": acc.instrument_count,
+                        "Balance": acc.balance
                     }
                 )
             df = pd.DataFrame(data)
@@ -83,52 +85,6 @@ def load_accounts_to_session():
                 pass
             st.session_state["accounts_df"] = df
 
-
-def load_brokers_to_session():
-    if "brokers_df" not in st.session_state:
-        with get_session() as session:
-            brokers = session.query(Broker).all()
-            data = []
-            for acc in brokers:
-                data.append(
-                    {
-                        "ID": acc.id,
-                        "Name": acc.name,
-                    }
-                )
-            df = pd.DataFrame(data)
-            try:
-                df.set_index(
-                    "ID",
-                    inplace=True,
-                )
-            except KeyError:
-                pass
-            st.session_state["brokers_df"] = df
-
-
-def load_symbols_to_session():
-    if "symbols_df" not in st.session_state:
-        with get_session() as session:
-            symbols = session.query(Symbol).all()
-            data = []
-            for symbol in symbols:
-                data.append(
-                    {
-                        "ID": symbol.id,
-                        "Name": symbol.symbol,
-                        "Description": symbol.description,
-                    }
-                )
-            df = pd.DataFrame(data)
-            try:
-                df.set_index(
-                    "ID",
-                    inplace=True,
-                )
-            except KeyError:
-                pass
-            st.session_state["symbols_df"] = df
 
 def get_all_items_from_table(table, fields) -> pd.DataFrame:
     with get_session() as session:

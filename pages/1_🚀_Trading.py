@@ -3,16 +3,12 @@ import streamlit as st
 import pandas as pd
 from streamlit_tree_select import tree_select
 from streamlit_quill import st_quill
-import time
 
-from models.Account import AccountType, PlatformType
-from models.Trade import DirectionType, OrderType
-from models.currencies import CurrencyType
+from models import AccountType, PlatformType, Trade, DirectionType, OrderType, CurrencyType, Strategy, Symbol, Broker
 from utils.case_converter import title_to_snake
 from utils.session_data import (
     load_accounts_to_session,
-    load_brokers_to_session,
-    load_symbols_to_session,
+    get_all_items_from_table
 )
 from utils.tree import build_tree
 
@@ -30,9 +26,11 @@ with st.spinner("Loading data..."):
     if "accounts_df" not in st.session_state:
         load_accounts_to_session()
     if "brokers_df" not in st.session_state:
-        load_brokers_to_session()
+        st.session_state["brokers_df"] = get_all_items_from_table(Broker, ["id", "name"])
     if "symbols_df" not in st.session_state:
-        load_symbols_to_session()
+        st.session_state["symbols_df"] = get_all_items_from_table(Symbol, ["id", "name", "description"])
+    if "strategies_df" not in st.session_state:
+        st.session_state["strategies_df"] = get_all_items_from_table(Strategy, ["id", "name"])
 
 
 
@@ -50,7 +48,6 @@ st_col1, st_col2 = st.columns([1, 2], gap="large")
 
 with st_col1:
     st.markdown("#### Accounts")
-
 
     enum_mapping = {
         "Type": AccountType,
@@ -74,7 +71,7 @@ with st_col1:
 with st_col2:
     st.markdown("#### Trade Parameters")
     c1, c2 = st.columns([3,1])
-    strategy = c1.selectbox("Strategy", options=[], index=None, accept_new_options=True, placeholder="Select or write new strategy")
+    strategy = c1.selectbox("Strategy", options=st.session_state["strategies_df"]["Name"], accept_new_options=True, placeholder="Select or write new strategy")
     trade_risk = 0.01 * c2.number_input("Trade Risk %", min_value=0.1, max_value=3.0, value=1.0, step=0.1, format="%.2f", help="Risk per trade per account")
     with st.expander("Common Parameters", expanded=True):
         c1, c2, c3, c4, c5 = st.columns(5)
@@ -84,7 +81,7 @@ with st_col2:
         common_order_type = c4.selectbox("Order Type", options=[order_type.value for order_type in OrderType])
         dir_currency = c5.selectbox("Direction based on Currency", options=["", *[currency.value for currency in CurrencyType]])
 
-    symbols = st.multiselect("Select Symbols", options=st.session_state["symbols_df"]["Name"].tolist())
+    symbols = st.multiselect("Select Symbols", options=st.session_state["symbols_df"]["Name"])
     if len(symbols) == 0 and "edited_df" in st.session_state:
         st.session_state.pop("edited_df")
     if symbols:
