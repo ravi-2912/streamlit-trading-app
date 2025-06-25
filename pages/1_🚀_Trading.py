@@ -18,6 +18,9 @@ from utils.tree import build_tree
 st.set_page_config(page_title="MT5 Trades Manager", page_icon="🚀", layout="wide")
 
 
+def execute_trade():
+    pass
+
 st.title("🚀 Trading")
 c1, c2,c3,c4,c5, c6 = st.columns(6)
 c1.metric("Equity", 10000, "1%", border=True)
@@ -155,6 +158,6 @@ with st_col2:
             use_container_width=True,
             num_rows="fixed",
         )
-
+        st.button("Execute", on_click=execute_trade, icon=":material/rocket_launch:", )
         st.dataframe(st.session_state["edited_df"], use_container_width=True)
 
