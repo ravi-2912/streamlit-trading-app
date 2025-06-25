@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 from streamlit_tree_select import tree_select
 from streamlit_quill import st_quill
+import time
 
 from models.Account import AccountType, PlatformType
 from models.Trade import DirectionType, OrderType
@@ -21,7 +22,21 @@ st.set_page_config(page_title="MT5 Trades Manager", page_icon="🚀", layout="wi
 def execute_trade():
     pass
 
+
 st.title("🚀 Trading")
+
+
+with st.spinner("Loading data..."):
+    if "accounts_df" not in st.session_state:
+        load_accounts_to_session()
+    if "brokers_df" not in st.session_state:
+        load_brokers_to_session()
+    if "symbols_df" not in st.session_state:
+        load_symbols_to_session()
+    time.sleep(1)
+
+
+
 c1, c2,c3,c4,c5, c6 = st.columns(6)
 c1.metric("Equity", 10000, "1%", border=True)
 c2.metric("Available Margin", "95%", "-5%", border=True)
@@ -36,13 +51,7 @@ st_col1, st_col2 = st.columns([1, 2], gap="large")
 
 with st_col1:
     st.markdown("#### Accounts")
-    with st.spinner("Loading accounts..."):
-        if "accounts_df" not in st.session_state:
-            load_accounts_to_session()
-        if "brokers_df" not in st.session_state:
-            load_brokers_to_session()
-        if "symbols_df" not in st.session_state:
-            load_symbols_to_session()
+
 
     enum_mapping = {
         "Type": AccountType,
