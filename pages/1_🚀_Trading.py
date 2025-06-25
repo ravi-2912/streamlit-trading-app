@@ -33,7 +33,6 @@ with st.spinner("Loading data..."):
         load_brokers_to_session()
     if "symbols_df" not in st.session_state:
         load_symbols_to_session()
-    time.sleep(1)
 
 
 
