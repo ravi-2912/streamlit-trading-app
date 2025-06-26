@@ -1,12 +1,20 @@
 import os
 from enum import Enum
-from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Float, Enum as SQLAlchemyEnum
+from sqlalchemy import (
+    Column,
+    ForeignKey,
+    Integer,
+    String,
+    Boolean,
+    Float,
+    Enum as SQLAlchemyEnum,
+)
 from sqlalchemy.orm import relationship
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 
 from db.base import Base
-from models.currencies import CurrencyType
+from models.enums import PlatformType, AccountType, CurrencyType
 
 load_dotenv()
 
@@ -15,15 +23,6 @@ if not ENCRYPTION_KEY:
     raise ValueError("ENCRYPTION_KEY not set in environment or .env file.")
 fernet = Fernet(ENCRYPTION_KEY.encode())
 
-
-class AccountType(str, Enum):
-    demo = "Demo"
-    live = "Live"
-
-class PlatformType(str, Enum):
-    mt5 = "MT5"
-    mt4 = "MT4"
-    ct5 = "cT5"
 
 class Account(Base):
     __tablename__ = "accounts"
@@ -42,10 +41,10 @@ class Account(Base):
     portable = Column(Boolean, nullable=False, default=True)
     server = Column(String, nullable=False)
 
-    broker_id = Column(Integer, ForeignKey('brokers.id'), nullable=True)
+    broker_id = Column(Integer, ForeignKey("brokers.id"), nullable=True)
     broker = relationship("Broker", back_populates="accounts")
 
-    instruments = relationship('Instrument', backref='account')
+    instruments = relationship("Instrument", backref="account")
 
     trades = relationship("Trade", back_populates="account")
 
@@ -67,4 +66,3 @@ class Account(Base):
             self.__password_encrypted = fernet.encrypt(value.encode()).decode()
         else:
             self.__password_encrypted = None
-

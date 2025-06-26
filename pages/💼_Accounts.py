@@ -1,9 +1,9 @@
 import streamlit as st
-from models.Account import Account, AccountType, PlatformType, CurrencyType
-from db.get_session import get_session
-import pandas as pd
 
-from utils.session_data import load_accounts_to_session, load_brokers_to_session
+from models import Broker, Account, AccountType, PlatformType, CurrencyType
+from db.get_session import get_session
+
+from utils.session_data import get_all_items_from_table, load_accounts_to_session
 
 st.set_page_config(page_title="Account Manager", page_icon="💼", layout="wide")
 
@@ -41,7 +41,9 @@ def add_account():
 
         c1, _ = st.columns(2)
         with c1:
-            currency = st.selectbox("Currency", options=[currency.value for currency in CurrencyType])
+            currency = st.selectbox(
+                "Currency", options=[currency.value for currency in CurrencyType]
+            )
 
         portable = st.checkbox("Portable", value=True)
 
@@ -77,5 +79,8 @@ with st.spinner("Loading accounts..."):
     if "accounts_df" not in st.session_state:
         load_accounts_to_session()
     if "brokers_df" not in st.session_state:
-        load_brokers_to_session()
+        st.session_state["brokers_df"] = get_all_items_from_table(
+            Broker, ["id", "name"]
+        )
+
     st.dataframe(st.session_state["accounts_df"], use_container_width=True)

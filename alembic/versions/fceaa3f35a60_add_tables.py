@@ -1,15 +1,15 @@
 """Add tables
 
-Revision ID: 14774bdbe30a
+Revision ID: fceaa3f35a60
 Revises: 
-Create Date: 2025-06-25 22:15:10.025382
+Create Date: 2025-06-26 01:12:22.260579
 
 """
 from alembic import op
 import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
-revision = '14774bdbe30a'
+revision = 'fceaa3f35a60'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -103,6 +103,8 @@ def upgrade():
     sa.Column('open_time', sa.DateTime(), nullable=False),
     sa.Column('exit_time', sa.DateTime(), nullable=True),
     sa.Column('exit_price', sa.Float(), nullable=True),
+    sa.Column('probability', sa.Enum('very_high', 'high', 'medium', 'low', name='tradesuccessprobabilitytype'), nullable=False),
+    sa.Column('mindstate', sa.Enum('exhausted', 'tired', 'sleepy', 'lazy', 'fresh', 'energetic', 'hyper', 'sad', 'gloomy', 'anxious', 'fearful', 'angry', 'frustrated', 'panicked', 'depressed', 'regretful', 'disappointed', 'vengeful', 'happy', 'calm', 'confident', 'excited', 'hopeful', 'euphoric', 'satisfied', 'grateful', 'focused', 'distracted', 'confused', 'overwhelmed', 'mindful', 'impulsive', 'rational', 'reactive', 'indifferent', 'zoned_out', 'tunnel_vision', 'flow', 'normal', 'active', 'neutral', 'aggressive', 'defensive', 'cautious', 'reckless', 'overconfident', 'disciplined', 'emotional', 'robotic', 'burnt_out', 'patient', 'bored', 'curious', 'stressed', 'under_pressure', 'relief', name='tradingmindstate'), nullable=False),
     sa.Column('duration', sa.String(), nullable=True),
     sa.Column('tags', sa.String(), nullable=True),
     sa.Column('reward_risk', sa.Float(), nullable=True),
