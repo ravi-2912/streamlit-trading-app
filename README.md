@@ -9,3 +9,13 @@ Use the following commands to start up
     alembic upgrade head
     uv run -- streamlit run 🏠_Home.py
 ```
+
+Creating migrations
+```bash
+    alembic revision --autogenerate -m "Add tables"
+```
+
+Apply migrations
+```bash
+    alembic upgrade head
+```
