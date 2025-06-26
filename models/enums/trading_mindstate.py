@@ -3,13 +3,13 @@ from enum import Enum
 
 class TradingMindState(str, Enum):
     # ENERGY STATES
-    exhausted = "Exhausted"
-    tired = "Tired"
-    sleepy = "Sleepy"
-    lazy = "Lazy"
     fresh = "Fresh"
     energetic = "Energetic"
     hyper = "Hyper"
+    lazy = "Lazy"
+    tired = "Tired"
+    sleepy = "Sleepy"
+    exhausted = "Exhausted"
 
     # EMOTIONAL STATES - NEGATIVE
     sad = "Sad"
@@ -69,3 +69,8 @@ class TradingMindState(str, Enum):
     stressed = "Stressed"
     under_pressure = "Under Pressure"
     relief = "Relief"
+
+
+# TODO- mindstate scoring
+# TODO - categorization
+# TODO - Charting

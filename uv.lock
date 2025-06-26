@@ -731,6 +731,15 @@ wheels = [
 ]
 
 [[package]]
+name = "python-decouple"
+version = "3.8"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e1/97/373dcd5844ec0ea5893e13c39a2c67e7537987ad8de3842fe078db4582fa/python-decouple-3.8.tar.gz", hash = "sha256:ba6e2657d4f376ecc46f77a3a615e058d93ba5e465c01bbe57289bfb7cce680f", size = 9612, upload-time = "2023-03-01T19:38:38.143Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a2/d4/9193206c4563ec771faf2ccf54815ca7918529fe81f6adb22ee6d0e06622/python_decouple-3.8-py3-none-any.whl", hash = "sha256:d0d45340815b25f4de59c974b855bb38d03151d81b037d9e3f463b0c9f8cbd66", size = 9947, upload-time = "2023-03-01T19:38:36.015Z" },
+]
+
+[[package]]
 name = "python-dotenv"
 version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -960,6 +969,20 @@ wheels = [
 ]
 
 [[package]]
+name = "streamlit-aggrid"
+version = "1.1.5.post1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pandas" },
+    { name = "python-decouple" },
+    { name = "streamlit" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/92/29/6c2d0caeff49ce66b7af6b3d1332044fa7724d599f0f621ef77ea867bb2e/streamlit_aggrid-1.1.5.post1.tar.gz", hash = "sha256:d537ad3fa78ffbf345e95f03f700049be787a349eae764c434e01b76eaa031da", size = 4887716, upload-time = "2025-06-02T15:30:53.798Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/61/ca/76a86d186442c268542e1c182b95737a9d0b2968c0cb286f5d82e4bc07bb/streamlit_aggrid-1.1.5.post1-py3-none-any.whl", hash = "sha256:be298a1f26538d6da7738320e5fb656c12ab3acab90e3318db259aa7cea9ab7d", size = 4940909, upload-time = "2025-06-02T15:30:51.856Z" },
+]
+
+[[package]]
 name = "streamlit-quill"
 version = "0.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -1046,6 +1069,7 @@ dependencies = [
     { name = "setuptools" },
     { name = "sqlalchemy" },
     { name = "streamlit" },
+    { name = "streamlit-aggrid" },
     { name = "streamlit-quill" },
     { name = "streamlit-tree-select" },
 ]
@@ -1065,6 +1089,7 @@ requires-dist = [
     { name = "setuptools", specifier = ">=80.9.0" },
     { name = "sqlalchemy", specifier = ">=2.0.41" },
     { name = "streamlit", specifier = ">=1.46.0" },
+    { name = "streamlit-aggrid", specifier = ">=1.1.5.post1" },
     { name = "streamlit-quill", specifier = ">=0.0.3" },
     { name = "streamlit-tree-select", specifier = ">=0.0.5" },
 ]

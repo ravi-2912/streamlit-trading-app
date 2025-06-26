@@ -1,15 +1,15 @@
 """Add tables
 
-Revision ID: fceaa3f35a60
+Revision ID: d9ccd55683ed
 Revises: 
-Create Date: 2025-06-26 01:12:22.260579
+Create Date: 2025-06-26 17:43:58.973201
 
 """
 from alembic import op
 import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
-revision = 'fceaa3f35a60'
+revision = 'd9ccd55683ed'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -62,6 +62,7 @@ def upgrade():
     sa.Column('portable', sa.Boolean(), nullable=False),
     sa.Column('server', sa.String(), nullable=False),
     sa.Column('broker_id', sa.Integer(), nullable=True),
+    sa.Column('archived', sa.Boolean(), nullable=False),
     sa.ForeignKeyConstraint(['broker_id'], ['brokers.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -85,6 +86,7 @@ def upgrade():
     )
     op.create_table('trades',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('trade_id', sa.String(), nullable=False),
     sa.Column('account_id', sa.Integer(), nullable=False),
     sa.Column('symbol_id', sa.String(), nullable=False),
     sa.Column('instrument_id', sa.Integer(), nullable=False),
@@ -104,7 +106,7 @@ def upgrade():
     sa.Column('exit_time', sa.DateTime(), nullable=True),
     sa.Column('exit_price', sa.Float(), nullable=True),
     sa.Column('probability', sa.Enum('very_high', 'high', 'medium', 'low', name='tradesuccessprobabilitytype'), nullable=False),
-    sa.Column('mindstate', sa.Enum('exhausted', 'tired', 'sleepy', 'lazy', 'fresh', 'energetic', 'hyper', 'sad', 'gloomy', 'anxious', 'fearful', 'angry', 'frustrated', 'panicked', 'depressed', 'regretful', 'disappointed', 'vengeful', 'happy', 'calm', 'confident', 'excited', 'hopeful', 'euphoric', 'satisfied', 'grateful', 'focused', 'distracted', 'confused', 'overwhelmed', 'mindful', 'impulsive', 'rational', 'reactive', 'indifferent', 'zoned_out', 'tunnel_vision', 'flow', 'normal', 'active', 'neutral', 'aggressive', 'defensive', 'cautious', 'reckless', 'overconfident', 'disciplined', 'emotional', 'robotic', 'burnt_out', 'patient', 'bored', 'curious', 'stressed', 'under_pressure', 'relief', name='tradingmindstate'), nullable=False),
+    sa.Column('mindstate', sa.Enum('fresh', 'energetic', 'hyper', 'lazy', 'tired', 'sleepy', 'exhausted', 'sad', 'gloomy', 'anxious', 'fearful', 'angry', 'frustrated', 'panicked', 'depressed', 'regretful', 'disappointed', 'vengeful', 'happy', 'calm', 'confident', 'excited', 'hopeful', 'euphoric', 'satisfied', 'grateful', 'focused', 'distracted', 'confused', 'overwhelmed', 'mindful', 'impulsive', 'rational', 'reactive', 'indifferent', 'zoned_out', 'tunnel_vision', 'flow', 'normal', 'active', 'neutral', 'aggressive', 'defensive', 'cautious', 'reckless', 'overconfident', 'disciplined', 'emotional', 'robotic', 'burnt_out', 'patient', 'bored', 'curious', 'stressed', 'under_pressure', 'relief', name='tradingmindstate'), nullable=False),
     sa.Column('duration', sa.String(), nullable=True),
     sa.Column('tags', sa.String(), nullable=True),
     sa.Column('reward_risk', sa.Float(), nullable=True),

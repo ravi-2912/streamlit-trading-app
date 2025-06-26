@@ -15,8 +15,9 @@ from models import (
     Symbol,
     Broker,
 )
+from models.enums import TradeSuccessProbabilityType, TradingMindState
 from utils.case_converter import title_to_snake
-from utils.session_data import load_accounts_to_session, get_all_items_from_table
+from utils.session_data import get_all_items_from_account, get_all_items_from_table
 from utils.tree import build_tree
 
 st.set_page_config(page_title="MT5 Trades Manager", page_icon="🚀", layout="wide")
@@ -31,7 +32,7 @@ st.title("🚀 Trading")
 
 with st.spinner("Loading data..."):
     if "accounts_df" not in st.session_state:
-        load_accounts_to_session()
+        st.session_state["accounts_df"] = get_all_items_from_account()
     if "brokers_df" not in st.session_state:
         st.session_state["brokers_df"] = get_all_items_from_table(
             Broker, ["id", "name"]
@@ -56,41 +57,48 @@ c6.metric("Daily Drawdown", "1%", "-0.5%", border=True)
 
 st.divider()
 
+with st.sidebar:
+    st.session_state["show_sidebar"]  = st.toggle("Show Accounts", value= True)
+
+
 st_col1, st_col2 = st.columns([1, 2], gap="large")
 
-with st_col1:
-    st.markdown("#### Accounts")
+if st.session_state["show_sidebar"]:
+    with st_col1:
+        st.markdown("#### Accounts")
 
-    enum_mapping = {
-        "Type": AccountType,
-        "Broker": Enum(
-            "BrokerType",
-            {
-                title_to_snake(item): item
-                for item in st.session_state["brokers_df"]["Name"].tolist()
-            },
-            type=str,
-        ),
-        "Platform": PlatformType,
-    }
+        enum_mapping = {
+            "Type": AccountType,
+            "Broker": Enum(
+                "BrokerType",
+                {
+                    title_to_snake(item): item
+                    for item in st.session_state["brokers_df"]["Name"].tolist()
+                },
+                type=str,
+            ),
+            "Platform": PlatformType,
+        }
 
-    options = list(enum_mapping.keys())
-    grouping = st.multiselect(
-        "Group accounts by (select one)",
-        options=options,
-        default=options[:2],
-        help="Select how to group the accounts in the tree.",
-    )
-    ungroup = list(set(options) - set(grouping))
+        options = list(enum_mapping.keys())
+        grouping = st.multiselect(
+            "Group accounts by (select one)",
+            options=options,
+            default=options[:2],
+            help="Select how to group the accounts in the tree.",
+        )
+        ungroup = list(set(options) - set(grouping))
 
-    nodes, expanded = build_tree(
-        st.session_state["accounts_df"],
-        grouping,
-        enum_mapping=enum_mapping,
-        ungroup_keys=ungroup,
-    )
-    selected = tree_select(nodes, show_expand_all=True, expanded=expanded)
+        nodes, expanded = build_tree(
+            st.session_state["accounts_df"],
+            grouping,
+            enum_mapping=enum_mapping,
+            ungroup_keys=ungroup,
+        )
+        selected = tree_select(nodes, show_expand_all=True, expanded=expanded)
 
+else:
+    st_col2 = st.container()
 
 with st_col2:
     st.markdown("#### Trade Parameters")
@@ -110,6 +118,11 @@ with st_col2:
         format="%.2f",
         help="Risk per trade per account",
     )
+
+    c1, c2 = st.columns(2)
+    probability = c1.selectbox("Probability", options=[p.value for p in TradeSuccessProbabilityType])
+    mindstate = c2.selectbox("Mindstate", options=[ms.value for ms in TradingMindState])
+
     with st.expander("Common Parameters", expanded=True):
         c1, c2, c3, c4, c5 = st.columns(5)
         common_sl = c1.number_input(
@@ -231,9 +244,9 @@ with st_col2:
             use_container_width=True,
             num_rows="fixed",
         )
-        st.button(
-            "Execute",
-            on_click=execute_trade,
-            icon=":material/rocket_launch:",
-        )
+        execute = st.button("Execute", icon=":material/rocket_launch:")
+        if execute:
+            execute_trade()
+            st.balloons()
+
         st.dataframe(st.session_state["edited_df"], use_container_width=True)

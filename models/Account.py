@@ -48,6 +48,8 @@ class Account(Base):
 
     trades = relationship("Trade", back_populates="account")
 
+    archived = Column(Boolean, nullable=False, default=False)
+
     def __init__(self, **kwargs):
         password = kwargs.pop("password", None)
         super().__init__(**kwargs)

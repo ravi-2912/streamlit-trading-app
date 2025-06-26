@@ -23,6 +23,7 @@ from models.enums import (
 class Trade(Base):
     __tablename__ = "trades"
     id = Column(Integer, primary_key=True)
+    trade_id = Column(String, nullable=False)
 
     account_id = Column(Integer, ForeignKey("accounts.id"), nullable=False)
     account = relationship("Account", back_populates="trades")
@@ -52,6 +53,7 @@ class Trade(Base):
 
     probability = Column(SQLAlchemyEnum(TradeSuccessProbabilityType), nullable=False)
     mindstate = Column(SQLAlchemyEnum(TradingMindState), nullable=False)
+
     duration = Column(String, nullable=True)
     tags = Column(String, nullable=True)
     reward_risk = Column(Float, nullable=True)
