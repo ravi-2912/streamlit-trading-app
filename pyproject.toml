@@ -12,6 +12,7 @@ dependencies = [
     "cryptography>=45.0.4",
     "dotenv>=0.9.9",
     "metatrader5>=5.0.5120",
+    "nicegui>=2.20.0",
     "numpy>=2.3.0",
     "pandas>=2.3.0",
     "psutil>=7.0.0",

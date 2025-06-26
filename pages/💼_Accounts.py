@@ -121,5 +121,5 @@ with st.spinner("Loading accounts..."):
             st.session_state.pop("accounts_df", None)
             st.rerun()
 
-# TODO: Implement multi row edit and commit to DB
-# TODO: Implement show Account Balance curve (all) including All Accounts, filterable
+# TODO: Implement multi row edit and bulk commit to DB
+# TODO: Implement show Account Balance curve (all) including All Accounts, filterable (will need trades data/account change data)
